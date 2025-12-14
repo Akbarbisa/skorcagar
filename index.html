@@ -3,30 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <title>Live Score</title>
-<style>
-body { font-family: Arial; background: #f5f5f5; text-align: center; padding: 20px;}
-h1 { color: #ff0000; }
-.score { font-size: 24px; margin: 10px; }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Live Score</h1>
-<div id="matches"></div>
+<h1>Live Score Indonesia</h1>
+<div id="matches">Loading...</div>
 
 <script>
-// Contoh data skor manual
-const matches = [
-  {home: "Persija", away: "Persib", score: "2-1"},
-  {home: "Bali United", away: "Arema", score: "1-1"}
-];
+// API TheSportsDB (contoh: liga Indonesia ID = 4406)
+const apiURL = "https://www.thesportsdb.com/api/v1/json/1/eventsnextleague.php?id=4406";
 
-const container = document.getElementById('matches');
-matches.forEach(m => {
-  const div = document.createElement('div');
-  div.className = 'score';
-  div.textContent = `${m.home} ${m.score} ${m.away}`;
-  container.appendChild(div);
-});
+async function fetchScores() {
+  const res = await fetch(apiURL);
+  const data = await res.json();
+  const container = document.getElementById("matches");
+  container.innerHTML = "";
+  
+  data.events.forEach(match => {
+    const div = document.createElement("div");
+    div.className = "match";
+    div.innerHTML = `
+      <span class="team">${match.strHomeTeam}</span>
+      <span class="score">vs</span>
+      <span class="team">${match.strAwayTeam}</span>
+      <span class="date">${match.dateEvent}</span>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Update setiap 60 detik
+fetchScores();
+setInterval(fetchScores, 60000);
 </script>
 </body>
 </html>
