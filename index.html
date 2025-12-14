@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Live Score</title>
+<style>
+body { font-family: Arial; background: #f5f5f5; text-align: center; padding: 20px;}
+h1 { color: #ff0000; }
+.score { font-size: 24px; margin: 10px; }
+</style>
+</head>
+<body>
+<h1>Live Score</h1>
+<div id="matches"></div>
+
+<script>
+// Contoh data skor manual
+const matches = [
+  {home: "Persija", away: "Persib", score: "2-1"},
+  {home: "Bali United", away: "Arema", score: "1-1"}
+];
+
+const container = document.getElementById('matches');
+matches.forEach(m => {
+  const div = document.createElement('div');
+  div.className = 'score';
+  div.textContent = `${m.home} ${m.score} ${m.away}`;
+  container.appendChild(div);
+});
+</script>
+</body>
+</html>
