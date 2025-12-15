@@ -1,40 +1,392 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
-<meta charset="UTF-8">
-<title>Live Score</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bola Singa - Live Score & Mix Parlay Terlengkap</title>
+    <meta name="description" content="Situs bola mix parlay terlengkap dengan akses link mudah, live score real-time, live streaming, live odds, dan klasemen update setiap harinya.">
+    <meta name="keywords" content="live score, mix parlay, bola, sepakbola, premier league, la liga, serie a, bundesliga, taruhan bola">
+    <meta property="og:title" content="Bola Singa - Live Score & Mix Parlay Terlengkap">
+    <meta property="og:description" content="Situs bola mix parlay terlengkap dengan live score real-time dari berbagai liga top dunia.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'hsl(222 47% 7%)',
+                        foreground: 'hsl(210 40% 98%)',
+                        card: 'hsl(222 47% 11%)',
+                        'card-foreground': 'hsl(210 40% 98%)',
+                        primary: 'hsl(142 71% 45%)',
+                        'primary-foreground': 'hsl(144 61% 98%)',
+                        secondary: 'hsl(217 33% 17%)',
+                        'secondary-foreground': 'hsl(210 40% 98%)',
+                        muted: 'hsl(217 33% 15%)',
+                        'muted-foreground': 'hsl(215 20% 65%)',
+                        accent: 'hsl(45 93% 47%)',
+                        'accent-foreground': 'hsl(222 47% 11%)',
+                        destructive: 'hsl(0 84% 60%)',
+                        border: 'hsl(217 33% 17%)',
+                        live: 'hsl(0 84% 60%)',
+                        sidebar: 'hsl(222 47% 5%)',
+                        'sidebar-foreground': 'hsl(210 40% 98%)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .hover-elevate { transition: all 0.2s ease; }
+        .hover-elevate:hover { background-color: rgba(255,255,255,0.05); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body>
-<h1>Live Score Indonesia</h1>
-<div id="matches">Loading...</div>
+<body class="bg-background text-foreground min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 w-full bg-sidebar border-b border-border">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16 gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-md bg-primary">
+                        <svg class="w-6 h-6 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold text-sidebar-foreground">Bola Singa</span>
+                        <span class="text-xs text-muted-foreground hidden sm:block">Live Score & Mix Parlay</span>
+                    </div>
+                </div>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="#livescore" class="px-4 py-2 text-sm font-medium text-sidebar-foreground/80 hover:text-sidebar-foreground rounded-md hover-elevate">Live Score</a>
+                    <a href="#leagues" class="px-4 py-2 text-sm font-medium text-sidebar-foreground/80 hover:text-sidebar-foreground rounded-md hover-elevate">Liga</a>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-sidebar-foreground/80 hover:text-sidebar-foreground rounded-md hover-elevate">Klasemen</a>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-sidebar-foreground/80 hover:text-sidebar-foreground rounded-md hover-elevate">Jadwal</a>
+                </nav>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleTheme()" class="p-2 rounded-md hover-elevate text-sidebar-foreground">
+                        <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <a href="#" class="hidden sm:flex items-center px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-md hover:bg-primary/90 transition-colors">
+                        Bet Sekarang
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<script>
-// API TheSportsDB (contoh: liga Indonesia ID = 4406)
-const apiURL = "https://www.thesportsdb.com/api/v1/json/1/eventsnextleague.php?id=4406";
+    <!-- Hero Banners -->
+    <section class="relative w-full overflow-hidden" id="banners">
+        <div id="banner-container" class="flex transition-transform duration-500 ease-out">
+            <div class="relative w-full flex-shrink-0 aspect-[21/9] md:aspect-[3/1] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+                <div class="absolute inset-0 flex flex-col items-start justify-center px-6 md:px-16 lg:px-24">
+                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 max-w-lg">Live Score Terlengkap</h2>
+                    <p class="text-sm md:text-lg text-white/80 mb-4 md:mb-6 max-w-md">Update skor pertandingan secara real-time dari liga top dunia</p>
+                    <a href="#" class="inline-flex items-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary/90 transition-colors">Bet Sekarang</a>
+                </div>
+            </div>
+            <div class="relative w-full flex-shrink-0 aspect-[21/9] md:aspect-[3/1] bg-gradient-to-r from-green-900 via-green-800 to-green-900">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+                <div class="absolute inset-0 flex flex-col items-start justify-center px-6 md:px-16 lg:px-24">
+                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 max-w-lg">Mix Parlay Terbaik</h2>
+                    <p class="text-sm md:text-lg text-white/80 mb-4 md:mb-6 max-w-md">Odds tertinggi untuk taruhan mix parlay Anda</p>
+                    <a href="#" class="inline-flex items-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary/90 transition-colors">Bet Sekarang</a>
+                </div>
+            </div>
+            <div class="relative w-full flex-shrink-0 aspect-[21/9] md:aspect-[3/1] bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+                <div class="absolute inset-0 flex flex-col items-start justify-center px-6 md:px-16 lg:px-24">
+                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 max-w-lg">Bonus New Member 100%</h2>
+                    <p class="text-sm md:text-lg text-white/80 mb-4 md:mb-6 max-w-md">Dapatkan bonus deposit pertama Anda sekarang</p>
+                    <a href="#" class="inline-flex items-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary/90 transition-colors">Bet Sekarang</a>
+                </div>
+            </div>
+        </div>
+        <button onclick="prevSlide()" class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm rounded-md">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button onclick="nextSlide()" class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm rounded-md">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" id="dots"></div>
+    </section>
 
-async function fetchScores() {
-  const res = await fetch(apiURL);
-  const data = await res.json();
-  const container = document.getElementById("matches");
-  container.innerHTML = "";
-  
-  data.events.forEach(match => {
-    const div = document.createElement("div");
-    div.className = "match";
-    div.innerHTML = `
-      <span class="team">${match.strHomeTeam}</span>
-      <span class="score">vs</span>
-      <span class="team">${match.strAwayTeam}</span>
-      <span class="date">${match.dateEvent}</span>
-    `;
-    container.appendChild(div);
-  });
-}
+    <!-- Live Score Widget -->
+    <section class="py-8 bg-muted" id="livescore">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-live animate-pulse"></span>
+                Live Score
+            </h2>
+            <div class="bg-card rounded-lg overflow-hidden min-h-[500px]" id="scorebat-widget">
+                <script id="scorebat_widget_v2" type="application/json">{"output":"embed","size":"responsive","competition":["all-leagues"]}</script>
+                <script src="https://wid.scorebat.com/v2/embed.js?token=MjMyNjdfMTczNDI2MjA4M18zNWY5ODhkODc2YjJjNTQxZWFhMjI4N2I1NzIzZTNlMTViMDk4OTBi"></script>
+            </div>
+        </div>
+    </section>
 
-// Update setiap 60 detik
-fetchScores();
-setInterval(fetchScores, 60000);
-</script>
+    <!-- Top Matches -->
+    <section class="py-8 px-4" id="top-matches">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-md bg-accent">
+                        <svg class="w-5 h-5 text-accent-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold">Pertandingan Populer</h2>
+                        <p class="text-sm text-muted-foreground">Pertandingan paling banyak diminati hari ini</p>
+                    </div>
+                </div>
+                <span class="flex items-center gap-1 px-2 py-1 bg-destructive text-destructive-foreground text-xs font-medium rounded-md">
+                    <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                    2 Live
+                </span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="top-matches-grid">
+                <!-- Matches will be inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Leagues Section -->
+    <section class="py-8" id="leagues">
+        <div class="max-w-7xl mx-auto">
+            <div class="px-4 mb-4">
+                <h2 class="text-2xl font-bold">Pertandingan Hari Ini</h2>
+                <p class="text-sm text-muted-foreground">Skor dan jadwal pertandingan dari berbagai liga</p>
+            </div>
+            <div class="px-4" id="leagues-container">
+                <!-- Leagues will be inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-sidebar text-sidebar-foreground">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-md bg-primary">
+                            <svg class="w-6 h-6 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-lg font-bold">Bola Singa</span>
+                            <span class="text-xs text-muted-foreground">Live Score & Mix Parlay</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-muted-foreground mb-4">Situs bola mix parlay terlengkap dengan akses link mudah, live score, live streaming, live odds, dan klasemen update setiap harinya.</p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold mb-4 uppercase tracking-wider">Liga Populer</h3>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><a href="#" class="hover:text-sidebar-foreground">Premier League <span class="text-xs opacity-60">(Inggris)</span></a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">La Liga <span class="text-xs opacity-60">(Spanyol)</span></a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Serie A <span class="text-xs opacity-60">(Italia)</span></a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Bundesliga <span class="text-xs opacity-60">(Jerman)</span></a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Ligue 1 <span class="text-xs opacity-60">(Prancis)</span></a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold mb-4 uppercase tracking-wider">Menu</h3>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><a href="#livescore" class="hover:text-sidebar-foreground">Live Score</a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Klasemen</a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Jadwal Pertandingan</a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Berita Bola</a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Tips & Prediksi</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold mb-4 uppercase tracking-wider">Informasi</h3>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><a href="#" class="hover:text-sidebar-foreground">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-sidebar-foreground">Hubungi Kami</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-border mt-8 pt-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p class="text-xs text-muted-foreground text-center md:text-left">2024 Bola Singa. All rights reserved. Bermain dengan bijak.</p>
+                    <div class="flex items-center gap-4 text-xs text-muted-foreground">
+                        <span>18+</span>
+                        <span>|</span>
+                        <span>Responsible Gaming</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Banner Slider
+        let currentSlide = 0;
+        const totalSlides = 3;
+        const bannerContainer = document.getElementById('banner-container');
+        const dotsContainer = document.getElementById('dots');
+
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = `w-2 h-2 rounded-full transition-all ${i === 0 ? 'bg-white w-6' : 'bg-white/50'}`;
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+
+        function updateDots() {
+            const dots = dotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = `w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'bg-white w-6' : 'bg-white/50'}`;
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            bannerContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateDots();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            goToSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            goToSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 5000);
+
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Sample Match Data
+        const matches = [
+            { id: 1, home: 'Manchester City', away: 'Crystal Palace', homeScore: 3, awayScore: 0, status: 'finished', time: '21:00', league: 'Premier League', country: 'ENGLAND', flag: 'https://flagcdn.com/w40/gb-eng.png' },
+            { id: 2, home: 'Nottingham Forest', away: 'Tottenham', homeScore: 3, awayScore: 0, status: 'finished', time: '18:30', league: 'Premier League', country: 'ENGLAND', flag: 'https://flagcdn.com/w40/gb-eng.png' },
+            { id: 3, home: 'Real Madrid', away: 'Alaves', homeScore: 2, awayScore: 1, status: 'live', minute: 67, league: 'La Liga', country: 'SPAIN', flag: 'https://flagcdn.com/w40/es.png' },
+            { id: 4, home: 'Bayern Munich', away: 'Mainz', homeScore: 2, awayScore: 2, status: 'finished', time: '20:30', league: 'Bundesliga', country: 'GERMANY', flag: 'https://flagcdn.com/w40/de.png' },
+            { id: 5, home: 'Inter Milan', away: 'Genoa', homeScore: 2, awayScore: 1, status: 'live', minute: 82, league: 'Serie A', country: 'ITALY', flag: 'https://flagcdn.com/w40/it.png' },
+            { id: 6, home: 'PSG', away: 'Lyon', status: 'scheduled', time: '23:00', league: 'Ligue 1', country: 'FRANCE', flag: 'https://flagcdn.com/w40/fr.png' },
+        ];
+
+        function createMatchCard(match) {
+            const isLive = match.status === 'live';
+            const isFinished = match.status === 'finished';
+            
+            return `
+                <div class="bg-card p-4 rounded-lg hover-elevate cursor-pointer ${isLive ? 'ring-2 ring-live ring-inset' : ''}">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-xs text-muted-foreground">${match.league}</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium truncate ${isFinished && match.homeScore > match.awayScore ? 'text-primary' : ''}">${match.home}</div>
+                                    <div class="text-sm font-medium truncate ${isFinished && match.awayScore > match.homeScore ? 'text-primary' : ''}">${match.away}</div>
+                                </div>
+                                ${(isLive || isFinished) && match.homeScore !== undefined ? `
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-lg font-bold ${isLive ? 'text-live' : ''}">${match.homeScore}</span>
+                                        <span class="text-lg font-bold ${isLive ? 'text-live' : ''}">${match.awayScore}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1">
+                            ${isLive ? `
+                                <div class="flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full bg-live animate-pulse"></span>
+                                    <span class="text-xs font-semibold text-live">${match.minute}'</span>
+                                </div>
+                            ` : isFinished ? `
+                                <span class="px-2 py-0.5 bg-secondary text-secondary-foreground text-xs rounded">FT</span>
+                            ` : `
+                                <span class="text-xs text-muted-foreground">${match.time}</span>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render Top Matches
+        const topMatchesGrid = document.getElementById('top-matches-grid');
+        topMatchesGrid.innerHTML = matches.slice(0, 6).map(createMatchCard).join('');
+
+        // Group matches by league
+        const leagues = {};
+        matches.forEach(match => {
+            if (!leagues[match.league]) {
+                leagues[match.league] = { matches: [], country: match.country, flag: match.flag };
+            }
+            leagues[match.league].matches.push(match);
+        });
+
+        // Render Leagues
+        const leaguesContainer = document.getElementById('leagues-container');
+        leaguesContainer.innerHTML = Object.entries(leagues).map(([name, data]) => `
+            <div class="mb-6">
+                <div class="w-full flex items-center justify-between p-4 bg-card rounded-md mb-2 hover-elevate cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <img src="${data.flag}" alt="${data.country}" class="w-6 h-4 object-cover rounded-sm">
+                        <div class="flex flex-col items-start">
+                            <span class="text-xs text-muted-foreground uppercase">${data.country}</span>
+                            <span class="text-sm font-semibold">${name}</span>
+                        </div>
+                    </div>
+                    <span class="text-sm text-muted-foreground">${data.matches.length} Pertandingan</span>
+                </div>
+                <div class="space-y-2 pl-4 border-l-2 border-border">
+                    ${data.matches.map(createMatchCard).join('')}
+                </div>
+            </div>
+        `).join('');
+    </script>
 </body>
 </html>
